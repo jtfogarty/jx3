@@ -8,31 +8,49 @@ buildPacks:
     gitURL: https://github.com/jenkins-x/jxr-packs-kubernetes.git
 cluster:
   chartRepository: http://bucketrepo/bucketrepo/charts/
-  clusterName: "kind"
+  clusterName: kind
   devEnvApprovers:
   - todo
-  environmentGitOwner: "todo"
+  environmentGitOwner: todo
   gitKind: github
   gitName: github
   gitServer: https://github.com
   namespace: jx
-  project:  ""
   provider: kubernetes
-  registry: "ghcr.io"
-  zone: ""
+  registry: ghcr.io
 environments:
-- key: dev
-  owner: ""
-  repository: ""
-- key: staging
-  owner: ""
-  repository: ""
-- key: production
-  owner: ""
-  repository: ""
+- ingress:
+    domain: ""
+    externalDNS: false
+    namespaceSubDomain: ""
+    tls:
+      email: ""
+      enabled: false
+      production: false
+  key: dev
+  owner: jtfogarty
+  repository: jx3
+- ingress:
+    domain: ""
+    externalDNS: false
+    namespaceSubDomain: ""
+    tls:
+      email: ""
+      enabled: false
+      production: false
+  key: staging
+- ingress:
+    domain: ""
+    externalDNS: false
+    namespaceSubDomain: ""
+    tls:
+      email: ""
+      enabled: false
+      production: false
+  key: production
 gitops: true
 ingress:
-  domain: ""
+  domain: 10.10.100.56.nip.io
   externalDNS: false
   namespaceSubDomain: -jx.
   tls:
@@ -40,6 +58,8 @@ ingress:
     enabled: false
     production: false
 kaniko: true
+pipelineUser:
+  username: jtf-ops
 repository: bucketrepo
 secretStorage: local
 storage:
