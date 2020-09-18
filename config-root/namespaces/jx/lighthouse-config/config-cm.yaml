@@ -60,9 +60,11 @@ data:
         - needs-rebase
         repos:
         - jtfogarty/jx3
-      target_url: http://deck-jx.10.10.100.56.nip.io
+      target_url: http://deck-jx.
 kind: ConfigMap
 metadata:
   creationTimestamp: null
   name: config
   namespace: jx
+  labels:
+    gitops.jenkins-x.io/pipeline: 'namespaces'
