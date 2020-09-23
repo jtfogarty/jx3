@@ -1,0 +1,7 @@
+dependencies:
+- host: github.com
+  owner: jtfogarty
+  repo: tst-go-jx
+  url: https://github.com/jtfogarty/tst-go-jx.git
+  version: ""
+  versionURL: ""
