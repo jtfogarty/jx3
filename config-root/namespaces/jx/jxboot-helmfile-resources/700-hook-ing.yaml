@@ -16,4 +16,4 @@ spec:
               serviceName: hook
               servicePort: 80
             path: "/"
-      host: hook-jx.10.10.100.56.nip.io
+      host: hook-jx.jx.docure.ai

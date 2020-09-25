@@ -51,7 +51,7 @@ jxRequirements:
     key: production
   gitops: true
   ingress:
-    domain: 10.10.100.56.nip.io
+    domain: jx.docure.ai
     externalDNS: false
     namespaceSubDomain: -jx.
     tls:
