@@ -80,7 +80,7 @@ data:
         repos:
         - jtfogarty/jx3
         - jtfogarty/tst-go-jx
-      target_url: http://deck-jx.10.10.100.56.nip.io
+      target_url: http://deck-jx.jx.docure.ai
 kind: ConfigMap
 metadata:
   creationTimestamp: null
