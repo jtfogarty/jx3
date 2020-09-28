@@ -1,0 +1,2283 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  data:
+    config.yaml: |
+      branch-protection:
+        orgs:
+          jtfogarty:
+            repos:
+              jx3:
+                required_status_checks:
+                  contexts:
+                  - promotion-build
+              tst-go-jx:
+                required_status_checks:
+                  contexts:
+                  - pr-build
+        protect-tested-repos: true
+      github:
+        LinkURL: null
+      plank: {}
+      pod_namespace: jx
+      postsubmits:
+        jtfogarty/jx3:
+        - agent: tekton
+          branches:
+          - master
+          name: promotion
+          skip_report: true
+        jtfogarty/tst-go-jx:
+        - agent: tekton
+          branches:
+          - master
+          name: release
+          skip_report: true
+      presubmits:
+        jtfogarty/jx3:
+        - agent: tekton
+          always_run: true
+          context: promotion-build
+          name: promotion-build
+          rerun_command: /test this
+          trigger: (?m)^/test( all| this),?(\s+|$)
+        jtfogarty/tst-go-jx:
+        - agent: tekton
+          always_run: true
+          context: pr-build
+          name: pr-build
+          rerun_command: /test this
+          trigger: (?m)^/test( all| this),?(\s+|$)
+      prowjob_namespace: jx
+      push_gateway:
+        serve_metrics: false
+      tide:
+        context_options:
+          from-branch-protection: true
+          required-if-present-contexts: null
+          skip-unknown-contexts: false
+        merge_method:
+          jtfogarty/jx3: merge
+          jtfogarty/tst-go-jx: merge
+        queries:
+        - labels:
+          - approved
+          missingLabels:
+          - do-not-merge
+          - do-not-merge/hold
+          - do-not-merge/work-in-progress
+          - needs-ok-to-test
+          - needs-rebase
+          repos:
+          - jtfogarty/jx3
+          - jtfogarty/tst-go-jx
+        - labels:
+          - updatebot
+          missingLabels:
+          - do-not-merge
+          - do-not-merge/hold
+          - do-not-merge/work-in-progress
+          - needs-ok-to-test
+          - needs-rebase
+          repos:
+          - jtfogarty/jx3
+          - jtfogarty/tst-go-jx
+        target_url: http://deck-jx.jx.docure.ai
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"config.yaml":"branch-protection:\n  orgs:\n    jtfogarty:\n      repos:\n        jx3:\n          required_status_checks:\n            contexts:\n            - promotion-build\n        tst-go-jx:\n          required_status_checks:\n            contexts:\n            - pr-build\n  protect-tested-repos: true\ngithub:\n  LinkURL: null\nplank: {}\npod_namespace: jx\npostsubmits:\n  jtfogarty/jx3:\n  - agent: tekton\n    branches:\n    - master\n    name: promotion\n    skip_report: true\n  jtfogarty/tst-go-jx:\n  - agent: tekton\n    branches:\n    - master\n    name: release\n    skip_report: true\npresubmits:\n  jtfogarty/jx3:\n  - agent: tekton\n    always_run: true\n    context: promotion-build\n    name: promotion-build\n    rerun_command: /test this\n    trigger: (?m)^/test( all| this),?(\\s+|$)\n  jtfogarty/tst-go-jx:\n  - agent: tekton\n    always_run: true\n    context: pr-build\n    name: pr-build\n    rerun_command: /test this\n    trigger: (?m)^/test( all| this),?(\\s+|$)\nprowjob_namespace: jx\npush_gateway:\n  serve_metrics: false\ntide:\n  context_options:\n    from-branch-protection: true\n    required-if-present-contexts: null\n    skip-unknown-contexts: false\n  merge_method:\n    jtfogarty/jx3: merge\n    jtfogarty/tst-go-jx: merge\n  queries:\n  - labels:\n    - approved\n    missingLabels:\n    - do-not-merge\n    - do-not-merge/hold\n    - do-not-merge/work-in-progress\n    - needs-ok-to-test\n    - needs-rebase\n    repos:\n    - jtfogarty/jx3\n    - jtfogarty/tst-go-jx\n  - labels:\n    - updatebot\n    missingLabels:\n    - do-not-merge\n    - do-not-merge/hold\n    - do-not-merge/work-in-progress\n    - needs-ok-to-test\n    - needs-rebase\n    repos:\n    - jtfogarty/jx3\n    - jtfogarty/tst-go-jx\n  target_url: http://deck-jx.jx.docure.ai\n"},"kind":"ConfigMap","metadata":{"annotations":{},"creationTimestamp":null,"labels":{"gitops.jenkins-x.io/pipeline":"namespaces"},"name":"config","namespace":"jx"}}
+    creationTimestamp: "2020-09-18T16:10:36Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+    name: config
+    namespace: jx
+    resourceVersion: "16432313"
+    selfLink: /api/v1/namespaces/jx/configmaps/config
+    uid: aefe8d9b-edae-4b8a-b196-72b8de72b4a8
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":null,"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces"},"name":"config-artifact-bucket","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:42Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+    name: config-artifact-bucket
+    namespace: jx
+    resourceVersion: "14302156"
+    selfLink: /api/v1/namespaces/jx/configmaps/config-artifact-bucket
+    uid: 862f6b5b-fbcf-41c3-b74a-d06bf3a51a78
+- apiVersion: v1
+  data:
+    size: 5Gi
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"size":"5Gi"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces"},"name":"config-artifact-pvc","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:42Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+    name: config-artifact-pvc
+    namespace: jx
+    resourceVersion: "14302158"
+    selfLink: /api/v1/namespaces/jx/configmaps/config-artifact-pvc
+    uid: 810cf86c-44f1-4422-9ec8-0c8f0a7917ad
+- apiVersion: v1
+  data:
+    _example: |
+      ################################
+      #                              #
+      #    EXAMPLE CONFIGURATION     #
+      #                              #
+      ################################
+
+      # This block is not actually functional configuration,
+      # but serves to illustrate the available configuration
+      # options and document them in a way that is accessible
+      # to users that `kubectl edit` this config map.
+      #
+      # These sample configuration options may be copied out of
+      # this example block and unindented to be in the data block
+      # to actually change the configuration.
+
+      # default-timeout-minutes contains the default number of
+      # minutes to use for TaskRun, if none is specified.
+      default-timeout-minutes: "60"  # 60 minutes
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"_example":"################################\n#                              #\n#    EXAMPLE CONFIGURATION     #\n#                              #\n################################\n\n# This block is not actually functional configuration,\n# but serves to illustrate the available configuration\n# options and document them in a way that is accessible\n# to users that `kubectl edit` this config map.\n#\n# These sample configuration options may be copied out of\n# this example block and unindented to be in the data block\n# to actually change the configuration.\n\n# default-timeout-minutes contains the default number of\n# minutes to use for TaskRun, if none is specified.\ndefault-timeout-minutes: \"60\"  # 60 minutes\n"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces"},"name":"config-defaults","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:42Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+    name: config-defaults
+    namespace: jx
+    resourceVersion: "14302159"
+    selfLink: /api/v1/namespaces/jx/configmaps/config-defaults
+    uid: 2faaa000-99d2-4b8b-9197-dfcd1f665d9b
+- apiVersion: v1
+  data:
+    image: gcr.io/k8s-prow/entrypoint@sha256:7c7cd8906ce4982ffee326218e9fc75da2d4896d53cabc9833b9cc8d2d6b2b8f
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"image":"gcr.io/k8s-prow/entrypoint@sha256:7c7cd8906ce4982ffee326218e9fc75da2d4896d53cabc9833b9cc8d2d6b2b8f"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces"},"name":"config-entrypoint","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:42Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+    name: config-entrypoint
+    namespace: jx
+    resourceVersion: "14302160"
+    selfLink: /api/v1/namespaces/jx/configmaps/config-entrypoint
+    uid: f74c06e4-6f4d-4be2-9a74-490f9eb236a5
+- apiVersion: v1
+  data:
+    loglevel.controller: info
+    loglevel.webhook: info
+    zap-logger-config: |
+      {
+        "level": "info",
+        "development": false,
+        "sampling": {
+          "initial": 100,
+          "thereafter": 100
+        },
+        "outputPaths": ["stdout"],
+        "errorOutputPaths": ["stderr"],
+        "encoding": "json",
+        "encoderConfig": {
+          "timeKey": "",
+          "levelKey": "level",
+          "nameKey": "logger",
+          "callerKey": "caller",
+          "messageKey": "msg",
+          "stacktraceKey": "stacktrace",
+          "lineEnding": "",
+          "levelEncoder": "",
+          "timeEncoder": "",
+          "durationEncoder": "",
+          "callerEncoder": ""
+        }
+      }
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"loglevel.controller":"info","loglevel.webhook":"info","zap-logger-config":"{\n  \"level\": \"info\",\n  \"development\": false,\n  \"sampling\": {\n    \"initial\": 100,\n    \"thereafter\": 100\n  },\n  \"outputPaths\": [\"stdout\"],\n  \"errorOutputPaths\": [\"stderr\"],\n  \"encoding\": \"json\",\n  \"encoderConfig\": {\n    \"timeKey\": \"\",\n    \"levelKey\": \"level\",\n    \"nameKey\": \"logger\",\n    \"callerKey\": \"caller\",\n    \"messageKey\": \"msg\",\n    \"stacktraceKey\": \"stacktrace\",\n    \"lineEnding\": \"\",\n    \"levelEncoder\": \"\",\n    \"timeEncoder\": \"\",\n    \"durationEncoder\": \"\",\n    \"callerEncoder\": \"\"\n  }\n}\n"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces"},"name":"config-logging","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:43Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+    name: config-logging
+    namespace: jx
+    resourceVersion: "14302163"
+    selfLink: /api/v1/namespaces/jx/configmaps/config-logging
+    uid: fe25d8b7-9ede-49b3-b2e8-b8c7b524274c
+- apiVersion: v1
+  data:
+    _example: |
+      ################################
+      #                              #
+      #    EXAMPLE CONFIGURATION     #
+      #                              #
+      ################################
+
+      # This block is not actually functional configuration,
+      # but serves to illustrate the available configuration
+      # options and document them in a way that is accessible
+      # to users that `kubectl edit` this config map.
+      #
+      # These sample configuration options may be copied out of
+      # this example block and unindented to be in the data block
+      # to actually change the configuration.
+
+      # metrics.backend-destination field specifies the system metrics destination.
+      # It supports either prometheus (the default) or stackdriver.
+      # Note: Using Stackdriver will incur additional charges.
+      metrics.backend-destination: prometheus
+
+      # metrics.stackdriver-project-id field specifies the Stackdriver project ID. This
+      # field is optional. When running on GCE, application default credentials will be
+      # used and metrics will be sent to the cluster's project if this field is
+      # not provided.
+      metrics.stackdriver-project-id: "<your stackdriver project id>"
+
+      # metrics.allow-stackdriver-custom-metrics indicates whether it is allowed
+      # to send metrics to Stackdriver using "global" resource type and custom
+      # metric type. Setting this flag to "true" could cause extra Stackdriver
+      # charge.  If metrics.backend-destination is not Stackdriver, this is
+      # ignored.
+      metrics.allow-stackdriver-custom-metrics: "false"
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"_example":"################################\n#                              #\n#    EXAMPLE CONFIGURATION     #\n#                              #\n################################\n\n# This block is not actually functional configuration,\n# but serves to illustrate the available configuration\n# options and document them in a way that is accessible\n# to users that `kubectl edit` this config map.\n#\n# These sample configuration options may be copied out of\n# this example block and unindented to be in the data block\n# to actually change the configuration.\n\n# metrics.backend-destination field specifies the system metrics destination.\n# It supports either prometheus (the default) or stackdriver.\n# Note: Using Stackdriver will incur additional charges.\nmetrics.backend-destination: prometheus\n\n# metrics.stackdriver-project-id field specifies the Stackdriver project ID. This\n# field is optional. When running on GCE, application default credentials will be\n# used and metrics will be sent to the cluster's project if this field is\n# not provided.\nmetrics.stackdriver-project-id: \"\u003cyour stackdriver project id\u003e\"\n\n# metrics.allow-stackdriver-custom-metrics indicates whether it is allowed\n# to send metrics to Stackdriver using \"global\" resource type and custom\n# metric type. Setting this flag to \"true\" could cause extra Stackdriver\n# charge.  If metrics.backend-destination is not Stackdriver, this is\n# ignored.\nmetrics.allow-stackdriver-custom-metrics: \"false\"\n"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces"},"name":"config-observability","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:43Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+    name: config-observability
+    namespace: jx
+    resourceVersion: "14302164"
+    selfLink: /api/v1/namespaces/jx/configmaps/config-observability
+    uid: 476ec008-39b5-44a8-b8ce-78d4e862b2a7
+- apiVersion: v1
+  data:
+    disable-home-env-overwrite: "false"
+    disable-working-directory-overwrite: "false"
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"disable-home-env-overwrite":"false","disable-working-directory-overwrite":"false"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces"},"name":"feature-flags","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:42Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+    name: feature-flags
+    namespace: jx
+    resourceVersion: "14302161"
+    selfLink: /api/v1/namespaces/jx/configmaps/feature-flags
+    uid: f6893511-3300-4780-8c68-6ff98f6e2021
+- apiVersion: v1
+  data:
+    domain: jx.docure.ai
+    email: ""
+    exposer: Ingress
+    issuer: ""
+    tls: "false"
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"domain":"jx.docure.ai","email":"","exposer":"Ingress","issuer":"","tls":"false"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces"},"name":"ingress-config","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+    name: ingress-config
+    namespace: jx
+    resourceVersion: "16432143"
+    selfLink: /api/v1/namespaces/jx/configmaps/ingress-config
+    uid: 087245e4-a8f4-404a-ac10-1a87df13234f
+- apiVersion: v1
+  data:
+    versions: 'theia: 0.3.14'
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"versions":"theia: 0.3.14"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces"},"name":"jenkins-x-devpod-config","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+    name: jenkins-x-devpod-config
+    namespace: jx
+    resourceVersion: "14301973"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-devpod-config
+    uid: eb6fcea1-2186-48c5-a439-6905a2abe0cd
+- apiVersion: v1
+  data:
+    docker.registry: ghcr.io
+    kaniko.flags: ""
+  kind: ConfigMap
+  metadata:
+    annotations:
+      expose.config.fabric8.io/clusterip-port-if-empty-key: docker.registry
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"docker.registry":"ghcr.io","kaniko.flags":""},"kind":"ConfigMap","metadata":{"annotations":{"expose.config.fabric8.io/clusterip-port-if-empty-key":"docker.registry"},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces"},"name":"jenkins-x-docker-registry","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+    name: jenkins-x-docker-registry
+    namespace: jx
+    resourceVersion: "14301974"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-docker-registry
+    uid: 46c94a54-047f-434e-9a4f-21feaa148a50
+- apiVersion: v1
+  data:
+    knownRepositories: |
+      repositories:
+      - chart: {}
+        github: jenkins-x/jenkins-x-extensions
+    repository: |
+      chart: {}
+      github: jenkins-x/jenkins-x-extensions
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"knownRepositories":"repositories:\n- chart: {}\n  github: jenkins-x/jenkins-x-extensions\n","repository":"chart: {}\ngithub: jenkins-x/jenkins-x-extensions\n"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces"},"name":"jenkins-x-extensions","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+    name: jenkins-x-extensions
+    namespace: jx
+    resourceVersion: "14301975"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-extensions
+    uid: 3b04f2b9-0bcf-4bae-b465-3e65ad01c93c
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-aws-cdk
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 9229, 3000, 8080, 5005
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        - name: volume-0
+          secret:
+            secretName: jenkins-maven-settings
+        - name: volume-1
+          secret:
+            secretName: jenkins-release-gpg
+        containers:
+        - name: aws-cdk
+          image: gcr.io/jenkinsxio/builder-maven-nodejs:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          - name: _JAVA_OPTIONS
+            value: -XX:+UnlockExperimentalVMOptions -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx512m
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+            - name: volume-0
+              mountPath: /root/.m2/
+            - name: volume-1
+              mountPath: /home/jenkins/.gnupg
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-aws-cdk\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 9229, 3000, 8080, 5005\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  - name: volume-0\n    secret:\n      secretName: jenkins-maven-settings\n  - name: volume-1\n    secret:\n      secretName: jenkins-release-gpg\n  containers:\n  - name: aws-cdk\n    image: gcr.io/jenkinsxio/builder-maven-nodejs:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    - name: _JAVA_OPTIONS\n      value: -XX:+UnlockExperimentalVMOptions -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx512m\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume\n      - name: volume-0\n        mountPath: /root/.m2/\n      - name: volume-1\n        mountPath: /home/jenkins/.gnupg"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-aws-cdk","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-aws-cdk
+    namespace: jx
+    resourceVersion: "14301994"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-aws-cdk
+    uid: dac79954-4904-4d41-9c41-f45b1237c609
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-dlang
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 8080
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: dlang
+          image: gcr.io/jenkinsxio/builder-dlang:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1024Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-dlang\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 8080\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: dlang\n    image: gcr.io/jenkinsxio/builder-dlang:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 500m\n        memory: 1024Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-dlang","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-dlang
+    namespace: jx
+    resourceVersion: "14301976"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-dlang
+    uid: 9483a63b-6dd1-435d-9996-1411dbcaa7e5
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-go
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 2345, 8080
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: go
+          image: gcr.io/jenkinsxio/builder-go:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 400m
+              memory: 600Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-go\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 2345, 8080\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: go\n    image: gcr.io/jenkinsxio/builder-go:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 400m\n        memory: 600Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-go","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-go
+    namespace: jx
+    resourceVersion: "14301987"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-go
+    uid: 2e5b177a-e984-40dc-9dab-82c36f59ab4c
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-gradle
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 5005, 8080
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        - name: volume-0
+          secret:
+            secretName: jenkins-release-gpg
+        containers:
+        - name: gradle
+          image: gcr.io/jenkinsxio/builder-gradle:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          - name: _JAVA_OPTIONS
+            value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+            - name: volume-0
+              mountPath: /home/jenkins/.gnupg
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-gradle\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 5005, 8080\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  - name: volume-0\n    secret:\n      secretName: jenkins-release-gpg\n  containers:\n  - name: gradle\n    image: gcr.io/jenkinsxio/builder-gradle:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    - name: _JAVA_OPTIONS\n      value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume\n      - name: volume-0\n        mountPath: /home/jenkins/.gnupg"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-gradle","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-gradle
+    namespace: jx
+    resourceVersion: "14301997"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-gradle
+    uid: 80f88159-8d06-4f09-9f69-ab1d6e511792
+- apiVersion: v1
+  data:
+    pod: "apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-jx-base\n  labels:\n
+      \   jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts:
+      \nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name:
+      workspace-volume\n    emptyDir: {}\n  containers:\n  - name: jx-base\n    image:
+      gcr.io/jenkinsxio/builder-jx:2.1.143-762\n    args:\n    - cat\n    command:\n
+      \   - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n
+      \     privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n
+      \     valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n
+      \         key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n
+      \   - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n
+      \     value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value:
+      jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n
+      \     requests:\n        cpu: 200m\n        memory: 256Mi\n      limits:\n    volumeMounts:\n
+      \     - mountPath: /home/jenkins\n        name: workspace-volume"
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-jx-base\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: \nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: jx-base\n    image: gcr.io/jenkinsxio/builder-jx:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 200m\n        memory: 256Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-jx-base","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-jx-base
+    namespace: jx
+    resourceVersion: "14301998"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-jx-base
+    uid: 7a382f01-cb36-4a00-b57f-e7e3466e8dd3
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-machine-learning
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 3000, 8000
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: machine-learning
+          image: gcr.io/jenkinsxio/builder-machine-learning:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 2000m
+              memory: 4Gi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-machine-learning\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 3000, 8000\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: machine-learning\n    image: gcr.io/jenkinsxio/builder-machine-learning:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 2000m\n        memory: 4Gi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-machine-learning","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-machine-learning
+    namespace: jx
+    resourceVersion: "14301999"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-machine-learning
+    uid: f0e9bab6-f600-43b1-aeb8-a9fdd0b9da30
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-machine-learning-gpu
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 3000, 8000
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: machine-learning
+          image: gcr.io/jenkinsxio/builder-machine-learning-gpu:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 1Gi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-machine-learning-gpu\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 3000, 8000\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: machine-learning\n    image: gcr.io/jenkinsxio/builder-machine-learning-gpu:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 1000m\n        memory: 1Gi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-machine-learning-gpu","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-machine-learning-gpu
+    namespace: jx
+    resourceVersion: "14302000"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-machine-learning-gpu
+    uid: 6827c1ae-cedb-4877-bd24-2f47a27c61ac
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-maven
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 5005, 8080
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        - name: volume-0
+          secret:
+            secretName: jenkins-maven-settings
+        - name: volume-1
+          secret:
+            secretName: jenkins-release-gpg
+        containers:
+        - name: maven
+          image: gcr.io/jenkinsxio/builder-maven:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: MAVEN_OPTS
+            value: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          - name: _JAVA_OPTIONS
+            value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+            - name: volume-0
+              mountPath: /root/.m2/
+            - name: volume-1
+              mountPath: /home/jenkins/.gnupg
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-maven\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 5005, 8080\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  - name: volume-0\n    secret:\n      secretName: jenkins-maven-settings\n  - name: volume-1\n    secret:\n      secretName: jenkins-release-gpg\n  containers:\n  - name: maven\n    image: gcr.io/jenkinsxio/builder-maven:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: MAVEN_OPTS\n      value: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    - name: _JAVA_OPTIONS\n      value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume\n      - name: volume-0\n        mountPath: /root/.m2/\n      - name: volume-1\n        mountPath: /home/jenkins/.gnupg"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-maven","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:41Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-maven
+    namespace: jx
+    resourceVersion: "14302001"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-maven
+    uid: bbc35b92-9b6a-4c08-b73e-ce46bca976c5
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-maven-graalvm
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 5005, 8080
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        - name: volume-0
+          secret:
+            secretName: jenkins-maven-settings
+        - name: volume-1
+          secret:
+            secretName: jenkins-release-gpg
+        containers:
+        - name: maven
+          image: gcr.io/jenkinsxio/builder-maven-graalvm:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: MAVEN_OPTS
+            value: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          - name: _JAVA_OPTIONS
+            value: -XX:+UnlockExperimentalVMOptions -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx1800m
+          resources:
+            requests:
+              cpu: 400m
+              memory: 2Gi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+            - name: volume-0
+              mountPath: /root/.m2/
+            - name: volume-1
+              mountPath: /home/jenkins/.gnupg
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-maven-graalvm\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 5005, 8080\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  - name: volume-0\n    secret:\n      secretName: jenkins-maven-settings\n  - name: volume-1\n    secret:\n      secretName: jenkins-release-gpg\n  containers:\n  - name: maven\n    image: gcr.io/jenkinsxio/builder-maven-graalvm:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: MAVEN_OPTS\n      value: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    - name: _JAVA_OPTIONS\n      value: -XX:+UnlockExperimentalVMOptions -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx1800m\n    resources:\n      requests:\n        cpu: 400m\n        memory: 2Gi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume\n      - name: volume-0\n        mountPath: /root/.m2/\n      - name: volume-1\n        mountPath: /home/jenkins/.gnupg"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-maven-graalvm","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:41Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-maven-graalvm
+    namespace: jx
+    resourceVersion: "14302002"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-maven-graalvm
+    uid: 2c1a83ce-41d5-46f6-b204-1e8cf4c9f733
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-maven-java11
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 5005, 8080
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        - name: volume-0
+          secret:
+            secretName: jenkins-maven-settings
+        - name: volume-1
+          secret:
+            secretName: jenkins-release-gpg
+        containers:
+        - name: maven
+          image: gcr.io/jenkinsxio/builder-maven-java11:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: MAVEN_OPTS
+            value: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          - name: _JAVA_OPTIONS
+            value: -XX:+UnlockExperimentalVMOptions -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+            - name: volume-0
+              mountPath: /root/.m2/
+            - name: volume-1
+              mountPath: /home/jenkins/.gnupg
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-maven-java11\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 5005, 8080\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  - name: volume-0\n    secret:\n      secretName: jenkins-maven-settings\n  - name: volume-1\n    secret:\n      secretName: jenkins-release-gpg\n  containers:\n  - name: maven\n    image: gcr.io/jenkinsxio/builder-maven-java11:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: MAVEN_OPTS\n      value: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    - name: _JAVA_OPTIONS\n      value: -XX:+UnlockExperimentalVMOptions -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume\n      - name: volume-0\n        mountPath: /root/.m2/\n      - name: volume-1\n        mountPath: /home/jenkins/.gnupg"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-maven-java11","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:41Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-maven-java11
+    namespace: jx
+    resourceVersion: "14302003"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-maven-java11
+    uid: b76eacbe-e961-4991-a10d-0ebdfb4f7491
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-maven-nodejs
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 9229, 3000, 8080, 5005
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        - name: volume-0
+          secret:
+            secretName: jenkins-maven-settings
+        - name: volume-1
+          secret:
+            secretName: jenkins-release-gpg
+        containers:
+        - name: mavennodejs
+          image: gcr.io/jenkinsxio/builder-maven-nodejs:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          - name: _JAVA_OPTIONS
+            value: -XX:+UnlockExperimentalVMOptions -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+            - name: volume-0
+              mountPath: /root/.m2/
+            - name: volume-1
+              mountPath: /home/jenkins/.gnupg
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-maven-nodejs\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 9229, 3000, 8080, 5005\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  - name: volume-0\n    secret:\n      secretName: jenkins-maven-settings\n  - name: volume-1\n    secret:\n      secretName: jenkins-release-gpg\n  containers:\n  - name: mavennodejs\n    image: gcr.io/jenkinsxio/builder-maven-nodejs:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    - name: _JAVA_OPTIONS\n      value: -XX:+UnlockExperimentalVMOptions -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume\n      - name: volume-0\n        mountPath: /root/.m2/\n      - name: volume-1\n        mountPath: /home/jenkins/.gnupg"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-maven-nodejs","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-maven-nodejs
+    namespace: jx
+    resourceVersion: "14301977"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-maven-nodejs
+    uid: f7891615-f05b-43f7-a82c-20e9d0cb8ce9
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-newman
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 9229, 3000
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: newman
+          image: gcr.io/jenkinsxio/builder-newman:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-newman\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 9229, 3000\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: newman\n    image: gcr.io/jenkinsxio/builder-newman:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-newman","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-newman
+    namespace: jx
+    resourceVersion: "14301978"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-newman
+    uid: a95457a4-885c-4314-be09-49d2b52160e7
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-nodejs
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 9229, 3000, 8080
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: nodejs
+          image: gcr.io/jenkinsxio/builder-nodejs:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-nodejs\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 9229, 3000, 8080\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: nodejs\n    image: gcr.io/jenkinsxio/builder-nodejs:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-nodejs","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-nodejs
+    namespace: jx
+    resourceVersion: "14301979"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-nodejs
+    uid: 10d06b6a-262f-4280-b651-ed96fd920add
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-nodejs10x
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 9229, 3000, 8080
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: nodejs
+          image: gcr.io/jenkinsxio/builder-nodejs10x:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-nodejs10x\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 9229, 3000, 8080\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: nodejs\n    image: gcr.io/jenkinsxio/builder-nodejs10x:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-nodejs10x","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-nodejs10x
+    namespace: jx
+    resourceVersion: "14301980"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-nodejs10x
+    uid: f467a282-a5bb-4a53-bfa8-633536a4c2fd
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-nodejs12x
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 9229, 3000, 8080
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: nodejs
+          image: gcr.io/jenkinsxio/builder-nodejs12x:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-nodejs12x\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 9229, 3000, 8080\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: nodejs\n    image: gcr.io/jenkinsxio/builder-nodejs12x:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-nodejs12x","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-nodejs12x
+    namespace: jx
+    resourceVersion: "14301981"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-nodejs12x
+    uid: e8353f3c-ac4a-48fb-b8ae-fad20aba9c6f
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-nodejs8x
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 9229, 3000, 8080
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: nodejs
+          image: gcr.io/jenkinsxio/builder-nodejs8x:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-nodejs8x\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 9229, 3000, 8080\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: nodejs\n    image: gcr.io/jenkinsxio/builder-nodejs8x:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-nodejs8x","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-nodejs8x
+    namespace: jx
+    resourceVersion: "14301982"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-nodejs8x
+    uid: f7e709c4-c859-4400-9a2d-4662569ef332
+- apiVersion: v1
+  data:
+    pod: "apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-packer\n  labels:\n
+      \   jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts:
+      \nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name:
+      workspace-volume\n    emptyDir: {}\n  containers:\n  - name: packer\n    image:
+      hashicorp/packer:1.4.1\n    args:\n    - cat\n    command:\n    - /bin/sh\n
+      \   - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged:
+      false\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n
+      \       configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key:
+      docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n
+      \   - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n
+      \     value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value:
+      jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n
+      \     requests:\n        cpu: 100m\n        memory: 128Mi\n      limits:\n    volumeMounts:\n
+      \     - mountPath: /home/jenkins\n        name: workspace-volume"
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-packer\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: \nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: packer\n    image: hashicorp/packer:1.4.1\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: false\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 100m\n        memory: 128Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-packer","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-packer
+    namespace: jx
+    resourceVersion: "14301983"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-packer
+    uid: b9f3b49d-b91f-4e70-88d7-8c5eea423204
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-php5x
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 9229, 3000, 8080
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: nodejs
+          image: gcr.io/jenkinsxio/builder-php5x:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-php5x\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 9229, 3000, 8080\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: nodejs\n    image: gcr.io/jenkinsxio/builder-php5x:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-php5x","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-php5x
+    namespace: jx
+    resourceVersion: "14301995"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-php5x
+    uid: ab6697a6-a9a8-4fd7-938a-84441e54f222
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-php7x
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 9229, 3000, 8080
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: nodejs
+          image: gcr.io/jenkinsxio/builder-php7x:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-php7x\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 9229, 3000, 8080\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: nodejs\n    image: gcr.io/jenkinsxio/builder-php7x:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-php7x","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-php7x
+    namespace: jx
+    resourceVersion: "14301996"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-php7x
+    uid: 19f0f86e-a1d2-45f6-b93d-4f36a22445b3
+- apiVersion: v1
+  data:
+    pod: "apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-promote\n  labels:\n
+      \   jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts:
+      \nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name:
+      workspace-volume\n    emptyDir: {}\n  containers:\n  - name: promote\n    image:
+      gcr.io/jenkinsxio/builder-jx:2.1.143-762\n    args:\n    - cat\n    command:\n
+      \   - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n
+      \     privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n
+      \     valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n
+      \         key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n
+      \   - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n
+      \     value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value:
+      jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n
+      \     requests:\n        cpu: 200m\n        memory: 100Mi\n      limits:\n    volumeMounts:\n
+      \     - mountPath: /home/jenkins\n        name: workspace-volume"
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-promote\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: \nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: promote\n    image: gcr.io/jenkinsxio/builder-jx:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 200m\n        memory: 100Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-promote","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-promote
+    namespace: jx
+    resourceVersion: "14301984"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-promote
+    uid: 32af86cc-5c28-4b8f-8576-fa29eaf3aa3e
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-python
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 3000, 8000
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: python
+          image: gcr.io/jenkinsxio/builder-python:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-python\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 3000, 8000\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: python\n    image: gcr.io/jenkinsxio/builder-python:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-python","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-python
+    namespace: jx
+    resourceVersion: "14301985"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-python
+    uid: 4a7dc120-3c49-421f-88aa-4152149ab739
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-python2
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 3000, 8000
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: python
+          image: gcr.io/jenkinsxio/builder-python2:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-python2\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 3000, 8000\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: python\n    image: gcr.io/jenkinsxio/builder-python2:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-python2","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-python2
+    namespace: jx
+    resourceVersion: "14301986"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-python2
+    uid: ae7dc5db-683e-490a-a35a-2d9c3ae51ae8
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-python37
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 3000, 8000
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: python
+          image: gcr.io/jenkinsxio/builder-python37:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-python37\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 3000, 8000\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: python\n    image: gcr.io/jenkinsxio/builder-python37:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-python37","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-python37
+    namespace: jx
+    resourceVersion: "14301988"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-python37
+    uid: 8b53d579-07b9-4f0d-852d-8bfe6a3b7503
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-ruby
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 1234, 3000
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: ruby
+          image: gcr.io/jenkinsxio/builder-ruby:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-ruby\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 1234, 3000\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: ruby\n    image: gcr.io/jenkinsxio/builder-ruby:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-ruby","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-ruby
+    namespace: jx
+    resourceVersion: "14301989"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-ruby
+    uid: f433966a-ef30-4c3c-a408-6a7ffb615007
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-rust
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 8080
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: rust
+          image: gcr.io/jenkinsxio/builder-rust:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-rust\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 8080\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: rust\n    image: gcr.io/jenkinsxio/builder-rust:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-rust","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-rust
+    namespace: jx
+    resourceVersion: "14301990"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-rust
+    uid: dc18a911-0488-40d7-9886-08e889e364b4
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-scala
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 5005, 8080
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        - name: volume-0
+          secret:
+            secretName: jenkins-maven-settings
+        - name: volume-1
+          secret:
+            secretName: jenkins-release-gpg
+        containers:
+        - name: scala
+          image: gcr.io/jenkinsxio/builder-scala:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          - name: _JAVA_OPTIONS
+            value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+            - name: volume-0
+              mountPath: /root/.m2/
+            - name: volume-1
+              mountPath: /home/jenkins/.gnupg
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-scala\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 5005, 8080\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  - name: volume-0\n    secret:\n      secretName: jenkins-maven-settings\n  - name: volume-1\n    secret:\n      secretName: jenkins-release-gpg\n  containers:\n  - name: scala\n    image: gcr.io/jenkinsxio/builder-scala:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    - name: _JAVA_OPTIONS\n      value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume\n      - name: volume-0\n        mountPath: /root/.m2/\n      - name: volume-1\n        mountPath: /home/jenkins/.gnupg"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-scala","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-scala
+    namespace: jx
+    resourceVersion: "14301991"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-scala
+    uid: da4ecf4c-a8e9-493c-a075-a1039a360a28
+- apiVersion: v1
+  data:
+    pod: |-
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-swift
+        labels:
+          jenkins.io/kind: build-pod
+        annotations:
+          jenkins-x.io/devpodPorts: 8080
+      spec:
+        serviceAccount: tekton-sa
+        nodeSelector:
+        volumes:
+        - name: workspace-volume
+          emptyDir: {}
+        containers:
+        - name: swift
+          image: gcr.io/jenkinsxio/builder-swift:2.1.143-762
+          args:
+          - cat
+          command:
+          - /bin/sh
+          - -c
+          workingDir: /home/jenkins
+          securityContext:
+            privileged: true
+          tty: true
+          env:
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              configMapKeyRef:
+                name: jenkins-x-docker-registry
+                key: docker.registry
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: XDG_CONFIG_HOME
+            value: /home/jenkins
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+            limits:
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: workspace-volume
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-swift\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: 8080\nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: swift\n    image: gcr.io/jenkinsxio/builder-swift:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 400m\n        memory: 512Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-swift","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-swift
+    namespace: jx
+    resourceVersion: "14301992"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-swift
+    uid: d0f949ca-7789-4345-a4e7-f3ccbc4ce8e2
+- apiVersion: v1
+  data:
+    pod: "apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-terraform\n  labels:\n
+      \   jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts:
+      \nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name:
+      workspace-volume\n    emptyDir: {}\n  containers:\n  - name: terraform\n    image:
+      gcr.io/jenkinsxio/builder-terraform:2.1.143-762\n    args:\n    - cat\n    command:\n
+      \   - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n
+      \     privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n
+      \     valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n
+      \         key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n
+      \   - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n
+      \     value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value:
+      jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n
+      \     requests:\n        cpu: 400m\n        memory: 600Mi\n      limits:\n    volumeMounts:\n
+      \     - mountPath: /home/jenkins\n        name: workspace-volume"
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"pod":"apiVersion: v1\nkind: Pod\nmetadata:\n  name: jenkins-terraform\n  labels:\n    jenkins.io/kind: build-pod\n  annotations:\n    jenkins-x.io/devpodPorts: \nspec:\n  serviceAccount: tekton-sa\n  nodeSelector:\n  volumes:\n  - name: workspace-volume\n    emptyDir: {}\n  containers:\n  - name: terraform\n    image: gcr.io/jenkinsxio/builder-terraform:2.1.143-762\n    args:\n    - cat\n    command:\n    - /bin/sh\n    - -c\n    workingDir: /home/jenkins\n    securityContext:\n      privileged: true\n    tty: true\n    env:\n    - name: DOCKER_REGISTRY\n      valueFrom:\n        configMapKeyRef:\n          name: jenkins-x-docker-registry\n          key: docker.registry\n    - name: GIT_AUTHOR_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_AUTHOR_NAME\n      value: jenkins-x-bot\n    - name: GIT_COMMITTER_EMAIL\n      value: jenkins-x@googlegroups.com\n    - name: GIT_COMMITTER_NAME\n      value: jenkins-x-bot\n    - name: XDG_CONFIG_HOME\n      value: /home/jenkins\n    resources:\n      requests:\n        cpu: 400m\n        memory: 600Mi\n      limits:\n    volumeMounts:\n      - mountPath: /home/jenkins\n        name: workspace-volume"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces","jenkins.io/kind":"podTemplate"},"name":"jenkins-x-pod-template-terraform","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:40Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+      jenkins.io/kind: podTemplate
+    name: jenkins-x-pod-template-terraform
+    namespace: jx
+    resourceVersion: "14301993"
+    selfLink: /api/v1/namespaces/jx/configmaps/jenkins-x-pod-template-terraform
+    uid: ab56e4f0-2ff0-4b88-ad68-67efbda57f2e
+- apiVersion: v1
+  data:
+    kubeProvider: gke
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"kubeProvider":"gke"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"gitops.jenkins-x.io/pipeline":"namespaces"},"name":"jx-install-config","namespace":"jx"}}
+    creationTimestamp: "2020-09-15T21:11:42Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+    name: jx-install-config
+    namespace: jx
+    resourceVersion: "14302118"
+    selfLink: /api/v1/namespaces/jx/configmaps/jx-install-config
+    uid: 6995b63e-9b7f-419b-ba12-b2b4cf6de3ab
+- apiVersion: v1
+  data:
+    plugins.yaml: |
+      approve:
+      - lgtm_acts_as_approve: true
+        repos:
+        - jtfogarty/jx3
+        require_self_approval: true
+      - lgtm_acts_as_approve: true
+        repos:
+        - jtfogarty/tst-go-jx
+        require_self_approval: true
+      cat: {}
+      cherry_pick_unapproved: {}
+      config_updater:
+        gzip: false
+        maps:
+          env/prow/job.yaml:
+            name: config
+          env/prow/plugins.yaml:
+            name: plugins
+      heart: {}
+      label:
+        additional_labels: null
+      owners: {}
+      plugins:
+        jtfogarty/jx3:
+        - config-updater
+        - approve
+        - assign
+        - blunderbuss
+        - help
+        - hold
+        - lgtm
+        - lifecycle
+        - size
+        - trigger
+        - wip
+        - heart
+        - cat
+        - override
+        - dog
+        - pony
+        jtfogarty/tst-go-jx:
+        - approve
+        - assign
+        - blunderbuss
+        - help
+        - hold
+        - lgtm
+        - lifecycle
+        - override
+        - size
+        - trigger
+        - wip
+        - heart
+        - cat
+        - dog
+        - pony
+      requiresig: {}
+      sigmention: {}
+      size:
+        l: 0
+        m: 0
+        s: 0
+        xl: 0
+        xxl: 0
+      triggers:
+      - repos:
+        - jtfogarty/jx3
+        trusted_org: todo
+      - repos:
+        - jtfogarty/tst-go-jx
+        trusted_org: todo
+      welcome:
+      - message_template: Welcome
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"plugins.yaml":"approve:\n- lgtm_acts_as_approve: true\n  repos:\n  - jtfogarty/jx3\n  require_self_approval: true\n- lgtm_acts_as_approve: true\n  repos:\n  - jtfogarty/tst-go-jx\n  require_self_approval: true\ncat: {}\ncherry_pick_unapproved: {}\nconfig_updater:\n  gzip: false\n  maps:\n    env/prow/job.yaml:\n      name: config\n    env/prow/plugins.yaml:\n      name: plugins\nheart: {}\nlabel:\n  additional_labels: null\nowners: {}\nplugins:\n  jtfogarty/jx3:\n  - config-updater\n  - approve\n  - assign\n  - blunderbuss\n  - help\n  - hold\n  - lgtm\n  - lifecycle\n  - size\n  - trigger\n  - wip\n  - heart\n  - cat\n  - override\n  - dog\n  - pony\n  jtfogarty/tst-go-jx:\n  - approve\n  - assign\n  - blunderbuss\n  - help\n  - hold\n  - lgtm\n  - lifecycle\n  - override\n  - size\n  - trigger\n  - wip\n  - heart\n  - cat\n  - dog\n  - pony\nrequiresig: {}\nsigmention: {}\nsize:\n  l: 0\n  m: 0\n  s: 0\n  xl: 0\n  xxl: 0\ntriggers:\n- repos:\n  - jtfogarty/jx3\n  trusted_org: todo\n- repos:\n  - jtfogarty/tst-go-jx\n  trusted_org: todo\nwelcome:\n- message_template: Welcome\n"},"kind":"ConfigMap","metadata":{"annotations":{},"creationTimestamp":null,"labels":{"gitops.jenkins-x.io/pipeline":"namespaces"},"name":"plugins","namespace":"jx"}}
+    creationTimestamp: "2020-09-18T16:10:36Z"
+    labels:
+      gitops.jenkins-x.io/pipeline: namespaces
+    name: plugins
+    namespace: jx
+    resourceVersion: "15898024"
+    selfLink: /api/v1/namespaces/jx/configmaps/plugins
+    uid: e39b75a2-0d3b-42b4-8c75-7a2a50f45c89
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
