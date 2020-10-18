@@ -53,13 +53,16 @@ fetch: init
 
 	# convert k8s Secrets => ExternalSecret resources using secret mapping + schemas
 	# see: https://github.com/jenkins-x/jx-secret#mappings
-	jx secret convert --dir $(OUTPUT_DIR)
+	jx secret convert --source-dir $(OUTPUT_DIR)
 
 	# replicate secrets to local staging/production namespaces
 	jx secret replicate --selector secret.jenkins-x.io/replica-source=true
 
 	# lets make sure all the namespaces exist for environments of the replicated secrets
 	jx gitops namespace --dir-mode --dir $(OUTPUT_DIR)/namespaces
+
+	# lets publish the requirements metadata into the dev Environment.Spec.TeamSettings.BootRequirements so its easy to access them via CRDs
+	jx gitops requirements publish
 
 .PHONY: build
 # uncomment this line to enable kustomize
@@ -79,7 +82,7 @@ pre-build:
 .PHONY: post-build
 post-build:
 	# lets generate the lighthouse configuration
-	jx gitops scheduler -d config-root/namespaces/jx -o versionStream/src/base/namespaces/jx/lighthouse-config
+	jx gitops scheduler
 
 	# lets add the kubectl-apply prune annotations
 	#
@@ -125,8 +128,7 @@ verify-install:
 
 .PHONY: verify
 verify: dev-ns verify-ingress
-	jx verify env
-	jx verify webhooks --verbose --warn-on-fail
+	jx gitops webhook update --warn-on-fail
 
 .PHONY: dev-ns verify-ignore
 verify-ignore: verify-ingress-ignore
@@ -149,10 +151,17 @@ git-setup:
 
 .PHONY: regen-check
 regen-check:
-	jx gitops condition --last-commit-msg-prefix '!Merge pull request' -- make git-setup resolve-metadata all kubectl-apply verify-ingress-ignore commit
+	jx gitops git setup
+	jx gitops apply
 
-	# lets run this twice to ensure that ingress is setup after applying nginx if not using a custom domain yet
-	jx gitops condition --last-commit-msg-prefix '!Merge pull request' -- make verify-ingress-ignore all verify-ignore secrets-populate commit push secrets-wait
+.PHONY: regen-phase-1
+regen-phase-1: git-setup resolve-metadata all kubectl-apply verify-ingress-ignore commit
+
+.PHONY: regen-phase-2
+regen-phase-2: verify-ingress-ignore all verify-ignore secrets-populate commit
+
+.PHONY: regen-phase-3
+regen-phase-3: push secrets-wait
 
 .PHONY: apply
 apply: regen-check kubectl-apply verify
@@ -179,33 +188,32 @@ commit:
 	-git add --all
 	-git status
 	# lets ignore commit errors in case there's no changes and to stop pipelines failing
-	-git commit -m "chore: regenerated"
+	-git commit -m "chore: regenerated" -m "/pipeline cancel"
 
 .PHONY: all
 all: clean fetch build lint
 
 
 .PHONY: pr
-pr: all commit push-pr-branch
+pr:
+	jx gitops apply --pull-request
+
+.PHONY: pr-regen
+pr-regen: all commit push-pr-branch
 
 .PHONY: push-pr-branch
 push-pr-branch:
-	jx gitops pr push
+	jx gitops pr push --ignore-no-pr
 
 .PHONY: push
 push:
-	git push
+	git pull
+	git push -f
 
 .PHONY: release
 release: lint
 
 .PHONY: dev-ns
 dev-ns:
-	@echo "****************************************"
-	@echo "**                                    **"
-	@echo "** CHANGING TO jx NAMESPACE TO VERIFY **"
-	@echo "**                                    **"
-	@echo "****************************************"
-	kubectl config set-context dummy  --namespace=jx
-	kubectl config use-context dummy
-	jx ns -b
+	@echo changing to the jx namespace to verify
+	jx ns jx
